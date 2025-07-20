@@ -1,16 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { platformColors, platformNames, type Platform } from "@/lib/platform-colors";
 import type { Show } from "@shared/schema";
+import { Trash2 } from "lucide-react";
+import { useState } from "react";
 
 interface ShowTileProps {
   show: Show;
   onUpdateStatus: (id: number, status: string) => void;
+  onDelete: (id: number) => void;
   isUpdating: boolean;
 }
 
-export default function ShowTile({ show, onUpdateStatus, isUpdating }: ShowTileProps) {
+export default function ShowTile({ show, onUpdateStatus, onDelete, isUpdating }: ShowTileProps) {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const platform = show.platform as Platform;
   const platformColor = platformColors[platform] || platformColors.other;
   const platformName = platformNames[platform] || show.platform;
@@ -40,7 +45,7 @@ export default function ShowTile({ show, onUpdateStatus, isUpdating }: ShowTileP
       case "completed":
         return (
           <Button
-            onClick={() => onUpdateStatus(show.id, "watching")}
+            onClick={() => onUpdateStatus(show.id, "planned")}
             disabled={isUpdating}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white"
           >
@@ -53,40 +58,85 @@ export default function ShowTile({ show, onUpdateStatus, isUpdating }: ShowTileP
   };
 
   return (
-    <Card className="show-tile bg-card border-border overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 relative group rounded-lg">
-      <div className="relative">
-        <img
-          src={show.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgdmlld0JveD0iMCAwIDQwMCA2MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjMUYyOTM3Ii8+CjxyZWN0IHg9IjUwIiB5PSIyNTAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTAwIiByeD0iMTAiIGZpbGw9IiMzQjgyRjYiLz4KPHN2ZyB4PSIxNzUiIHk9IjI3NSIgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IndoaXRlIj4KPHA+VFY8L3A+Cjwvc3ZnPgo8dGV4dCB4PSIyMDAiIHk9IjQwMCIgZmlsbD0iIzhCNUM4QyIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1hZ2UgQXZhaWxhYmxlPC90ZXh0Pgo8L3N2Zz4K'}
-          alt={`${show.title} poster`}
-          className="w-full h-64 sm:h-72 object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgdmlld0JveD0iMCAwIDQwMCA2MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjMUYyOTM3Ii8+CjxyZWN0IHg9IjUwIiB5PSIyNTAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTAwIiByeD0iMTAiIGZpbGw9IiMzQjgyRjYiLz4KPHN2ZyB4PSIxNzUiIHk9IjI3NSIgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IndoaXRlIj4KPHA+VFY8L3A+Cjwvc3ZnPgo8dGV4dCB4PSIyMDAiIHk9IjQwMCIgZmlsbD0iIzhCNUM4QyIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1hZ2UgQXZhaWxhYmxlPC90ZXh0Pgo8L3N2Zz4K';
-          }}
-        />
-        
-        {/* Platform Badge */}
-        <Badge
-          className="absolute top-3 right-3 text-white text-xs font-semibold rounded-lg"
-          style={{ backgroundColor: platformColor }}
-        >
-          {platformName}
-        </Badge>
-        
-        {/* Completed Badge */}
-        {show.status === "completed" && (
-          <Badge className="absolute top-3 left-3 bg-green-600 text-white text-xs font-semibold rounded-lg">
-            ✓ Completed
+    <>
+      <Card className="show-tile bg-card border-border overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 relative group rounded-lg">
+        <div className="relative">
+          <img
+            src={show.imageUrl || 'https://static.cdnlogo.com/logos/t/94/tivo.svg'}
+            alt={`${show.title} poster`}
+            className="w-full h-64 sm:h-72 object-cover object-bottom"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = 'https://static.cdnlogo.com/logos/t/94/tivo.svg';
+            }}
+          />
+          
+          {/* Delete Button - Top Left */}
+          <Button
+            onClick={() => setShowDeleteDialog(true)}
+            variant="destructive"
+            size="sm"
+            className="absolute top-2 left-2 h-8 w-8 p-0 bg-red-500 hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+          
+          {/* Platform Badge - Top Right */}
+          <Badge
+            className="absolute top-3 right-3 text-white text-xs font-semibold rounded-lg"
+            style={{ backgroundColor: platformColor }}
+          >
+            {platformName}
           </Badge>
-        )}
-      </div>
-      
-      <CardContent className="p-4">
-        <h3 className="text-foreground font-semibold text-left mb-3 line-clamp-2">
-          {show.title}
-        </h3>
-        {getActionButton()}
-      </CardContent>
-    </Card>
+        </div>
+        
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-foreground font-semibold text-left flex-1 line-clamp-2">
+              {show.title}
+            </h3>
+            {/* Completed Badge - Right of Show Name */}
+            {show.status === "completed" && (
+              <Badge className="ml-2 bg-green-600 text-white text-xs font-semibold rounded-lg">
+                ✓ Completed
+              </Badge>
+            )}
+          </div>
+          {getActionButton()}
+        </CardContent>
+      </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent className="bg-card border-border max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-foreground">Delete Show</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Are you sure you want to delete "{show.title}" from your watchlist? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end space-x-2 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteDialog(false)}
+              className="border-border text-foreground"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                onDelete(show.id);
+                setShowDeleteDialog(false);
+              }}
+              disabled={isUpdating}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

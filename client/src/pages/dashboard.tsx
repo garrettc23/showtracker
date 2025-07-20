@@ -70,6 +70,26 @@ export default function Dashboard() {
     },
   });
 
+  const deleteShowMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/shows/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/shows"] });
+      toast({
+        title: "Show deleted",
+        description: "The show has been removed from your watchlist.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to delete show",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const filteredShows = useMemo(() => {
     const showsByStatus = {
       watching: shows.filter(show => show.status === "watching"),
@@ -105,6 +125,10 @@ export default function Dashboard() {
 
   const handleUpdateShow = (id: number, status: string) => {
     updateShowMutation.mutate({ id, status });
+  };
+
+  const handleDeleteShow = (id: number) => {
+    deleteShowMutation.mutate(id);
   };
 
   const handleLogout = () => {
@@ -254,7 +278,8 @@ export default function Dashboard() {
                   key={show.id}
                   show={show}
                   onUpdateStatus={handleUpdateShow}
-                  isUpdating={updateShowMutation.isPending}
+                  onDelete={handleDeleteShow}
+                  isUpdating={updateShowMutation.isPending || deleteShowMutation.isPending}
                 />
               ))}
             </div>

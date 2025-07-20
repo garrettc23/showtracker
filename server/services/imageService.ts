@@ -31,7 +31,7 @@ export class ImageService {
     }
 
     // Step 3: TiVo logo as fallback
-    return 'https://upload.wikimedia.org/wikipedia/commons/4/4e/TiVo_logo_2011_RGB.svg';
+    return 'https://static.cdnlogo.com/logos/t/94/tivo.svg';
   }
 
   private async searchGoogleImages(title: string): Promise<string | null> {
