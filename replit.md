@@ -54,13 +54,18 @@ Preferred communication style: Simple, everyday language.
 
 ### Show Management
 - Three status categories: 'watching', 'planned', 'completed'
+- Default status for new shows: 'watching' (Currently Watching)
 - Status transitions with appropriate button actions
 - Timestamp tracking for completion dates
 - Platform-specific styling with brand colors
+- Expanded platform support: Netflix, Hulu, Disney+, Prime Video, Apple TV+, HBO Max, Paramount+, Peacock, YouTube TV
 
 ### UI Components
 - **Tab System**: Instant switching between show categories
 - **Show Tiles**: Clean display with poster, title, platform badge, and action button
+- **Image Display**: Centered positioning (object-center) for better visual balance
+- **TiVo Logo Fallback**: Centered CDN logo for shows without images
+- **Delete Functionality**: Confirmation modal with delete button in top-left of tiles
 - **Add Show Dialog**: Simple form with title, platform, and status fields
 - **Responsive Design**: Mobile-first approach with Tailwind breakpoints
 
@@ -119,5 +124,12 @@ Preferred communication style: Simple, everyday language.
 - **Schema Push**: `npm run db:push` applies schema changes
 - **Migrations**: Generated in `/migrations` directory
 - **Connection**: Serverless connection pooling via Neon
+
+## Recent Changes (July 2025)
+- **Image Positioning**: Updated to centered positioning for better visual balance
+- **Default Status**: Changed new show default from "Plan to Watch" to "Currently Watching"  
+- **Platform Expansion**: Added Paramount+, Peacock, and YouTube TV with appropriate brand colors
+- **TiVo Logo**: Reverted to clean, centered CDN version for consistent fallback display
+- **User Experience**: Enhanced with delete confirmation modals and improved tile layouts
 
 The application is designed for simplicity and reliability, with a focus on core functionality over complex features. The architecture supports easy scaling and maintenance while providing a smooth user experience.
