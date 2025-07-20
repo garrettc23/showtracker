@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,6 +79,9 @@ export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps
       <DialogContent className="bg-card border-border max-w-md">
         <DialogHeader>
           <DialogTitle className="text-foreground">Add New Show</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Add a new TV show to your watchlist with its streaming platform.
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">

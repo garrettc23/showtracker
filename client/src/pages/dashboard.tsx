@@ -37,10 +37,8 @@ export default function Dashboard() {
     },
     onSuccess: () => {
       queryClient.clear(); // Clear all queries on logout
-      toast({
-        title: "Logged out",
-        description: "You have been logged out successfully.",
-      });
+      // Force immediate redirect to auth screen
+      window.location.reload();
     },
     onError: (error) => {
       toast({
