@@ -36,7 +36,18 @@ export default function Dashboard() {
       await apiRequest("POST", "/api/auth/logout");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      queryClient.clear(); // Clear all queries on logout
+      toast({
+        title: "Logged out",
+        description: "You have been logged out successfully.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Logout failed",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -186,12 +197,12 @@ export default function Dashboard() {
                     : "border-transparent text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <span className="block">
+                <span className="inline-flex items-center">
                   {tabContent[tab].title}
+                  <Badge variant="secondary" className="ml-2">
+                    {filteredShows[tab].length}
+                  </Badge>
                 </span>
-                <Badge variant="secondary" className="ml-2 inline-block">
-                  {filteredShows[tab].length}
-                </Badge>
               </button>
             ))}
           </nav>
