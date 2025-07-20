@@ -21,7 +21,7 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data: user } = useQuery({
+  const { data: user } = useQuery<{ id: number; username: string }>({
     queryKey: ["/api/auth/user"],
   });
 

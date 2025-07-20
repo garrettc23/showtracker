@@ -52,6 +52,7 @@ export class MemStorage implements IStorage {
     const show: Show = {
       ...showData,
       id,
+      imageUrl: showData.imageUrl || null,
       createdAt: new Date(),
       completedAt: showData.status === 'completed' ? new Date() : null,
     };

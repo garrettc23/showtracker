@@ -4,19 +4,62 @@ import { storage } from "./storage";
 import { imageService } from "./services/imageService";
 import { insertUserSchema, insertShowSchema, updateShowSchema } from "@shared/schema";
 
+// Extend session types
+declare module 'express-session' {
+  interface SessionData {
+    userId: number;
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Authentication routes
+  // Check if username exists
+  app.post("/api/auth/check-user", async (req, res) => {
+    try {
+      const { username } = insertUserSchema.parse(req.body);
+      const user = await storage.getUserByUsername(username);
+      
+      res.json({ 
+        exists: !!user,
+        user: user || null
+      });
+    } catch (error) {
+      console.error("User check error:", error);
+      res.status(400).json({ message: "Invalid username" });
+    }
+  });
+
+  // Create new user
+  app.post("/api/auth/create-user", async (req, res) => {
+    try {
+      const { username } = insertUserSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByUsername(username);
+      if (existingUser) {
+        return res.status(409).json({ message: "User already exists" });
+      }
+      
+      const user = await storage.createUser({ username });
+      req.session.userId = user.id;
+      
+      res.json(user);
+    } catch (error) {
+      console.error("User creation error:", error);
+      res.status(400).json({ message: "Failed to create user" });
+    }
+  });
+
+  // Login existing user
   app.post("/api/auth/login", async (req, res) => {
     try {
       const { username } = insertUserSchema.parse(req.body);
       
-      let user = await storage.getUserByUsername(username);
+      const user = await storage.getUserByUsername(username);
       if (!user) {
-        user = await storage.createUser({ username });
+        return res.status(404).json({ message: "User not found" });
       }
       
-      // Store user in session
-      (req.session as any).userId = user.id;
+      req.session.userId = user.id;
       
       res.json(user);
     } catch (error) {
@@ -35,7 +78,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/auth/user", async (req, res) => {
-    const userId = (req.session as any)?.userId;
+    const userId = req.session?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Not authenticated" });
     }
@@ -55,7 +98,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Shows routes
   app.get("/api/shows", async (req, res) => {
-    const userId = (req.session as any)?.userId;
+    const userId = req.session?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Not authenticated" });
     }
@@ -70,7 +113,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/shows", async (req, res) => {
-    const userId = (req.session as any)?.userId;
+    const userId = req.session?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Not authenticated" });
     }
@@ -97,7 +140,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.patch("/api/shows/:id", async (req, res) => {
-    const userId = (req.session as any)?.userId;
+    const userId = req.session?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Not authenticated" });
     }
@@ -118,7 +161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.delete("/api/shows/:id", async (req, res) => {
-    const userId = (req.session as any)?.userId;
+    const userId = req.session?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Not authenticated" });
     }
