@@ -7,6 +7,7 @@ export const platformColors = {
   hbo: 'hsl(270, 69%, 55%)', // #8A2BE2
   paramount: 'hsl(220, 100%, 50%)', // #0073E6
   peacock: 'hsl(275, 100%, 50%)', // #8800FF
+  youtube: 'hsl(358, 79%, 55%)', // #FF0000
   other: 'hsl(217, 19%, 53%)', // #6B7280
 } as const;
 
@@ -19,6 +20,7 @@ export const platformNames = {
   hbo: 'HBO Max',
   paramount: 'Paramount+',
   peacock: 'Peacock',
+  youtube: 'YouTube TV',
   other: 'Other',
 } as const;
 
