@@ -1,0 +1,45 @@
+Build a full web app called ShowTracker.  
+
+Purpose: Track TV shows across streaming platforms
+
+Core features:  
+1. **Single dashboard page** with 3 tabs:  
+   - Currently Watching  
+   - Plan to Watch  
+   - Completed (with a filter to view All Time, Last 30 Days, Last 3 Months, or This Year)  
+   Tabs must switch instantly with no lag and show an underline or highlight for the active tab.  
+
+2. **Show tiles** must display only:  
+   - Show title (centered)  
+   - Streaming platform name badge (top right overlay, using official brand color for Netflix, Hulu, Disney+, etc.)  
+   - Poster/thumbnail image (you must always have an image of the show, you can grab this from Google images)
+   - One action button per tile:  
+     - "Mark Completed" (green) in Currently Watching.  
+     - "Move to Watching" (blue) in Plan to Watch.  
+     - "Rewatch" (orange) in Completed (moves show back to Currently Watching).  
+
+3. **Image fetching (must not break):**  
+   - Step 1: Search Google for the most accurate poster or scene image of the show.  
+   - Step 2 (fallback): Use my TMDB API key to fetch the official thumbnail.  
+   - Must never leave a broken or missing image.  
+
+4. **Add Show button and form:**  
+   - Button is on the far right of the "Your Dashboard" header row.  
+   - Clicking opens a dialog with only 3 fields: title, platform, status (default status = Plan to Watch).  
+   - On submit, automatically fetches the image and creates the tile in the correct tab.  
+
+5. **Authentication:**  
+   - Simple username-based login.  
+   - No password.  
+   - If you know the username, you can log into that account.  
+   - Each account stores its own show data separately.  
+
+6. **UI:**  
+   - Clean, modern, minimal design.  
+   - Tab headers (Currently Watching, Plan to Watch, Completed) appear at the top of each view.  
+   - Smooth, instant tab transitions with visual feedback.  
+8. **Scope:**  
+   - No discovery, search, or episode/season tracking.  
+   - Only the dashboard, add show flow, login, and functional tabs.  
+
+Deliver a fully functional app with all features above. All bugs in add show and image fetching must be fixed. UI must be polished and responsive.
