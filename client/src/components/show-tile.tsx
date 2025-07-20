@@ -62,12 +62,12 @@ export default function ShowTile({ show, onUpdateStatus, onDelete, isUpdating }:
       <Card className="show-tile bg-card border-border overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 relative group rounded-lg">
         <div className="relative">
           <img
-            src={show.imageUrl || 'https://static.cdnlogo.com/logos/t/94/tivo.svg'}
+            src={show.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCIgdmlld0JveD0iMCAwIDMwMCA0NTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0NTAiIGZpbGw9IiMxRjI5MzciLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTAsIDIyNSkiPjxnIHRyYW5zZm9ybT0ic2NhbGUoMi41KSB0cmFuc2xhdGUoLTUwLCAtMjUpIj48cGF0aCBkPSJNMCAwaDEwMHY1MEgweiIgZmlsbD0iIzAwMCIvPjxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNFNTNFM0UiLz48Y2lyY2xlIGN4PSIyNSIgY3k9IjE1IiByPSIzIiBmaWxsPSIjMzhBMTY5Ii8+PGNpcmNsZSBjeD0iMzUiIGN5PSIxNSIgcj0iMyIgZmlsbD0iI0Q2OUUyRSIvPjxjaXJjbGUgY3g9IjQ1IiBjeT0iMTUiIHI9IjMiIGZpbGw9IiMzMTgyQ0UiLz48cGF0aCBkPSJNMjAgMjVjMCA1IDUgMTAgMTUgMTBzMTUtNSAxNS0xMCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEwIDVMMTAgME05MCA1TDkwIDBNMTAgNDVMMTAgNTBNOTAgNDVMOTAgNTAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PC9nPjwvZz48dGV4dCB4PSIxNTAiIHk9IjMyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzlDQTNBRiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+Tm8gSW1hZ2UgQXZhaWxhYmxlPC90ZXh0Pjwvc3ZnPg=='}
             alt={`${show.title} poster`}
-            className="w-full h-64 sm:h-72 object-cover object-bottom"
+            className="w-full h-64 sm:h-72 object-cover object-center"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'https://static.cdnlogo.com/logos/t/94/tivo.svg';
+              target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCIgdmlld0JveD0iMCAwIDMwMCA0NTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0NTAiIGZpbGw9IiMxRjI5MzciLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTAsIDIyNSkiPjxnIHRyYW5zZm9ybT0ic2NhbGUoMi41KSB0cmFuc2xhdGUoLTUwLCAtMjUpIj48cGF0aCBkPSJNMCAwaDEwMHY1MEgweiIgZmlsbD0iIzAwMCIvPjxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNFNTNFM0UiLz48Y2lyY2xlIGN4PSIyNSIgY3k9IjE1IiByPSIzIiBmaWxsPSIjMzhBMTY5Ii8+PGNpcmNsZSBjeD0iMzUiIGN5PSIxNSIgcj0iMyIgZmlsbD0iI0Q2OUUyRSIvPjxjaXJjbGUgY3g9IjQ1IiBjeT0iMTUiIHI9IjMiIGZpbGw9IiMzMTgyQ0UiLz48cGF0aCBkPSJNMjAgMjVjMCA1IDUgMTAgMTUgMTBzMTUtNSAxNS0xMCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEwIDVMMTAgME05MCA1TDkwIDBNMTAgNDVMMTAgNTBNOTAgNDVMOTAgNTAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PC9nPjwvZz48dGV4dCB4PSIxNTAiIHk9IjMyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzlDQTNBRiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+Tm8gSW1hZ2UgQXZhaWxhYmxlPC90ZXh0Pjwvc3ZnPg==';
             }}
           />
           

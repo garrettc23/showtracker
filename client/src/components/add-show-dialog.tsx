@@ -29,7 +29,7 @@ interface AddShowDialogProps {
 export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps) {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
-  const [status, setStatus] = useState("planned");
+  const [status, setStatus] = useState("watching");
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -70,7 +70,7 @@ export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps
   const handleClose = () => {
     setTitle("");
     setPlatform("");
-    setStatus("planned");
+    setStatus("watching");
     onOpenChange(false);
   };
 

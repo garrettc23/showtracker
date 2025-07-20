@@ -133,7 +133,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (error) {
         console.error("Image fetch error:", error);
         // Use TiVo logo fallback if image fetch fails completely
-        imageUrl = 'https://static.cdnlogo.com/logos/t/94/tivo.svg';
+        imageUrl = 'data:image/svg+xml;base64,' + Buffer.from(`
+      <svg width="300" height="450" viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="450" fill="#1F2937"/>
+        <g transform="translate(150, 225)">
+          <g transform="scale(2.5) translate(-50, -25)">
+            <path d="M0 0h100v50H0z" fill="#000"/>
+            <circle cx="15" cy="15" r="3" fill="#E53E3E"/>
+            <circle cx="25" cy="15" r="3" fill="#38A169"/>
+            <circle cx="35" cy="15" r="3" fill="#D69E2E"/>
+            <circle cx="45" cy="15" r="3" fill="#3182CE"/>
+            <path d="M20 25c0 5 5 10 15 10s15-5 15-10" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M10 5L10 0M90 5L90 0M10 45L10 50M90 45L90 50" stroke="#000" stroke-width="3"/>
+          </g>
+        </g>
+        <text x="150" y="320" text-anchor="middle" fill="#9CA3AF" font-family="Arial, sans-serif" font-size="14" font-weight="bold">No Image Available</text>
+      </svg>
+    `).toString('base64');
       }
 
       const show = await storage.createShow({

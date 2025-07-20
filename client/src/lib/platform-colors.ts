@@ -5,6 +5,8 @@ export const platformColors = {
   prime: 'hsl(195, 100%, 44%)', // #00A8E1
   apple: 'hsl(0, 0%, 0%)', // #000000
   hbo: 'hsl(270, 69%, 55%)', // #8A2BE2
+  paramount: 'hsl(220, 100%, 50%)', // #0073E6
+  peacock: 'hsl(275, 100%, 50%)', // #8800FF
   other: 'hsl(217, 19%, 53%)', // #6B7280
 } as const;
 
@@ -15,6 +17,8 @@ export const platformNames = {
   prime: 'Prime Video',
   apple: 'Apple TV+',
   hbo: 'HBO Max',
+  paramount: 'Paramount+',
+  peacock: 'Peacock',
   other: 'Other',
 } as const;
 
