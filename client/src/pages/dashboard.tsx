@@ -282,6 +282,18 @@ export default function Dashboard() {
                   isUpdating={updateShowMutation.isPending || deleteShowMutation.isPending}
                 />
               ))}
+              
+              {/* Add Show Button */}
+              <div className="show-tile bg-card border-border border-2 border-dashed overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 rounded-lg flex items-center justify-center min-h-[300px] sm:min-h-[350px]">
+                <Button
+                  onClick={() => setIsAddDialogOpen(true)}
+                  variant="ghost"
+                  className="w-full h-full flex flex-col items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                >
+                  <Plus className="h-12 w-12 mb-2" />
+                  <span className="text-sm font-medium">Add Show</span>
+                </Button>
+              </div>
             </div>
           )}
         </div>
@@ -290,6 +302,7 @@ export default function Dashboard() {
       <AddShowDialog
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
+        defaultStatus={activeTab === "planned" ? "planned" : activeTab === "completed" ? "completed" : "watching"}
       />
     </div>
   );

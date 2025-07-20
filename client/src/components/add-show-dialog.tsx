@@ -24,12 +24,12 @@ import { platformNames } from "@/lib/platform-colors";
 interface AddShowDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  defaultStatus: string;
 }
 
-export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps) {
+export default function AddShowDialog({ open, onOpenChange, defaultStatus }: AddShowDialogProps) {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
-  const [status, setStatus] = useState("watching");
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -58,11 +58,11 @@ export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() && platform && status) {
+    if (title.trim() && platform) {
       addShowMutation.mutate({
         title: title.trim(),
         platform,
-        status,
+        status: defaultStatus,
       });
     }
   };
@@ -70,7 +70,6 @@ export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps
   const handleClose = () => {
     setTitle("");
     setPlatform("");
-    setStatus("watching");
     onOpenChange(false);
   };
 
@@ -114,22 +113,6 @@ export default function AddShowDialog({ open, onOpenChange }: AddShowDialogProps
                     {name}
                   </SelectItem>
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div>
-            <Label htmlFor="status" className="text-sm font-medium text-foreground">
-              Status
-            </Label>
-            <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger className="mt-2 bg-input border-border text-foreground">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="planned">Plan to Watch</SelectItem>
-                <SelectItem value="watching">Currently Watching</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
               </SelectContent>
             </Select>
           </div>
